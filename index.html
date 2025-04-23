@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>抢红包小游戏</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #fff7e6; padding: 50px; }
+    h1 { color: #d4237a; }
+    .btn { padding: 15px 30px; font-size: 18px; background: #ff4d4f; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    .result { font-size: 20px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>抢红包啦！</h1>
+  <button class="btn" onclick="claim()">点我抢红包</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    function claim() {
+      fetch('http://localhost:3000/claim')
+        .then(res => res.json())
+        .then(data => {
+          if (data.amount) {
+            document.getElementById("result").innerHTML = `你抢到了 ${data.amount} 元红包 🎉`;
+          } else {
+            document.getElementById("result").innerHTML = data.message;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById("result").innerHTML = "请求失败，请稍后再试。";
+        });
+    }
+  </script>
+</body>
+</html>
