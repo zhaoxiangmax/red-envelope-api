@@ -7,23 +7,39 @@
     body { font-family: sans-serif; text-align: center; background: #fff7e6; padding: 50px; }
     h1 { color: #d4237a; }
     .btn { padding: 15px 30px; font-size: 18px; background: #ff4d4f; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 10px; }
     .result { font-size: 20px; margin-top: 20px; }
   </style>
 </head>
 <body>
   <h1>抢红包啦！</h1>
+
+  <!-- 📝 Name Input -->
+  <p><input type="text" id="playerName" placeholder="请输入你的名字" /></p>
+
+  <!-- 🧧 Button -->
   <button class="btn" onclick="claimRedEnvelope()">点我抢红包</button>
+
+  <!-- 📢 Result -->
   <div class="result" id="result"></div>
 
   <script>
-    const API_URL = 'https://hotpot-max.onrender.com/claim'; // 👈 Replace this with your actual Render URL
+    const API_URL = 'https://hotpot-max.onrender.com/claim'; // 👈 Replace this with your Render URL
 
     function claimRedEnvelope() {
+      const name = document.getElementById("playerName").value.trim();
+
+      if (!name) {
+        alert("请先输入你的名字！");
+        return;
+      }
+
       fetch(API_URL)
         .then(res => res.json())
         .then(data => {
           if (data.amount) {
-            document.getElementById("result").innerHTML = `🎉 你抢到了 <strong>${data.amount}</strong> 元红包！`;
+            document.querySelector("button").disabled = true;
+            document.getElementById("result").innerHTML = `🎉 ${name} 抢到了 <strong>${data.amount}</strong> 元红包！`;
           } else {
             document.getElementById("result").innerHTML = data.message || "抢红包失败，请稍后再试。";
           }
