@@ -12,23 +12,25 @@
 </head>
 <body>
   <h1>抢红包啦！</h1>
-  <button class="btn" onclick="claim()">点我抢红包</button>
+  <button class="btn" onclick="claimRedEnvelope()">点我抢红包</button>
   <div class="result" id="result"></div>
 
   <script>
-    function claim() {
-      fetch('http://localhost:3000/claim')
+    const API_URL = 'https://hotpot-max.onrender.com/claim'; // 👈 Replace this with your actual Render URL
+
+    function claimRedEnvelope() {
+      fetch(API_URL)
         .then(res => res.json())
         .then(data => {
           if (data.amount) {
-            document.getElementById("result").innerHTML = `你抢到了 ${data.amount} 元红包 🎉`;
+            document.getElementById("result").innerHTML = `🎉 你抢到了 <strong>${data.amount}</strong> 元红包！`;
           } else {
-            document.getElementById("result").innerHTML = data.message;
+            document.getElementById("result").innerHTML = data.message || "抢红包失败，请稍后再试。";
           }
         })
         .catch(err => {
-          console.error(err);
-          document.getElementById("result").innerHTML = "请求失败，请稍后再试。";
+          console.error("Fetch failed:", err);
+          document.getElementById("result").innerHTML = "连接失败，请稍后再试。";
         });
     }
   </script>
